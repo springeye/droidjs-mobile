@@ -6,10 +6,30 @@ import com.eclipsesource.v8.V8Object
 import com.github.springeye.droidjs.DroidJsApplication
 import com.github.springeye.droidjs.JSRuntime
 import com.github.springeye.droidjs.jsmodules.*
+fun V8.register(namespace:String,obj:Any): V8Object? {
+    val v8Object = V8Object(this)
+    add(namespace, v8Object)
+    obj::class.java.methods.forEach { method ->
+        v8Object.registerJavaMethod(obj, method.name, method.name, method.parameterTypes)
+    }
+    return v8Object
 
+
+}
+fun V8Object.register(obj:Any) {
+    obj::class.java.methods.forEach {method->
+        registerJavaMethod(obj,method.name,method.name,method.parameterTypes)
+    }
+}
+fun V8.getV8Object(javaObj:Any): V8Object {
+    val obj=V8Object(this)
+    javaObj::class.java.methods.forEach {method->
+        obj.registerJavaMethod(javaObj,method.name,method.name,method.parameterTypes)
+    }
+    return obj
+}
 class JSRuntimeV8(val app: DroidJsApplication) : JSRuntime {
-    private val v8: V8=V8.createV8Runtime()
-    init {
+    fun setup(v8:V8) {
         v8.registerJavaMethod({ v8obj, v8arr->
             val title=v8arr.getString(0)
             Toast.makeText(app,title,Toast.LENGTH_SHORT).show()
@@ -17,25 +37,21 @@ class JSRuntimeV8(val app: DroidJsApplication) : JSRuntime {
         },"alert")
         val console=Console()
         val _app=App(app)
-        val ui=Ui(app)
-        v8.add("console",V8Object(v8).apply {
-            IConsole::class.java.methods.forEach {method->
-                registerJavaMethod(console,method.name,method.name,method.parameterTypes)
-            }
-        })
-        v8.add("app",V8Object(v8).apply {
-            IApp::class.java.methods.forEach {method->
-                registerJavaMethod(_app,method.name,method.name,method.parameterTypes)
-            }
-        })
-        v8.add("ui",V8Object(v8).apply {
-            IUi::class.java.methods.forEach {method->
-                registerJavaMethod(ui,method.name,method.name,method.parameterTypes)
-            }
-        })
+        val ui=Ui(v8)
+        v8.register("console",console)?.apply { release() }
+        v8.register("app",_app)?.apply { release() }
+        v8.register("ui",ui)?.apply { release() }
+
+
+
     }
     override fun exec(script: String):Any {
-        return v8.executeScript(script)
+        val v8: V8=V8.createV8Runtime()
+        setup(v8)
+        val result=v8.executeScript(script)
+        v8.release(false)
+//        v8.close()
+        return result
     }
 
     override fun close() {

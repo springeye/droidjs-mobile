@@ -7,11 +7,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class AppAccessibilityService: AccessibilityService() {
-    @Inject
-    lateinit var application: DroidJsApplication
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        application.root = event?.source
-        if(application.root==null)return
+        DroidJsApplication.root = event?.source
+        if(DroidJsApplication.root==null)return
     }
 
     override fun onInterrupt() {
