@@ -2,11 +2,8 @@ package com.github.springeye.droidjs.di
 
 import android.app.Application
 import com.github.springeye.droidjs.DroidJsApplication
-import com.github.springeye.droidjs.jsmodules.App
-import com.github.springeye.droidjs.jsmodules.Console
-import com.github.springeye.droidjs.jsmodules.IApp
-import com.github.springeye.droidjs.jsmodules.IConsole
-import com.squareup.duktape.Duktape
+import com.github.springeye.droidjs.JSRuntime
+import com.github.springeye.droidjs.v8.JSRuntimeV8
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,11 +20,7 @@ object AppModule {
     }
     @Singleton
     @Provides
-    fun provideDuktape(app:App): Duktape {
-        val duktape = Duktape.create()
-        val console= Console()
-        duktape.set("console", IConsole::class.java,console)
-        duktape.set("app", IApp::class.java,app)
-        return duktape
+    fun provideJSRuntime(app:DroidJsApplication): JSRuntime {
+        return JSRuntimeV8(app)
     }
 }

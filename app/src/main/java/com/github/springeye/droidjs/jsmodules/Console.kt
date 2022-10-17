@@ -1,9 +1,10 @@
 package com.github.springeye.droidjs.jsmodules
 
 import android.util.Log
+import androidx.annotation.Keep
 import javax.inject.Inject
 
-
+@Keep
 interface IConsole {
     fun log(vararg params:Any)
 }

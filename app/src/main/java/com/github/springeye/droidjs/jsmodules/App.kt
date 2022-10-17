@@ -3,10 +3,11 @@ package com.github.springeye.droidjs.jsmodules
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
+import androidx.annotation.Keep
 import com.github.springeye.droidjs.DroidJsApplication
 import javax.inject.Inject
 
-
+@Keep
 interface IApp {
     fun getApkInfo(file:String)
     fun getAppName(packageName:String):String?
