@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val app=application as DroidJsApplication
-        js.evaluate("app.launchApp('com.tencent.wx')")
+        println( "启动微信:${js.evaluate("app.launchApp('com.tencent.wx')")}")
         js.evaluate("console.log('js测试js测试js测试js测试js测试');")
 
     }

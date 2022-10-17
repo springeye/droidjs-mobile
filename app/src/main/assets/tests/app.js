@@ -1,0 +1,3 @@
+GetApkInfo("aaa",{
+    get:['aaa']
+})

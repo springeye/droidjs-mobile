@@ -1,13 +1,14 @@
 package com.github.springeye.droidjs.jsmodules
 
+import android.util.Log
 import javax.inject.Inject
 
 
-interface IApp {
-    fun launchApp(packageName:String)
+interface IConsole {
+    fun log(vararg params:Any)
 }
-class App @Inject constructor(): IApp {
-    override fun launchApp(packageName:String){
-        println("====================launchApp:${packageName}")
+class Console @Inject constructor(): IConsole {
+    override fun log(vararg params: Any) {
+        Log.v("console",params.joinToString(" "))
     }
 }
