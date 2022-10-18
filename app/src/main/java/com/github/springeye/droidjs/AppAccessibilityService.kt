@@ -2,6 +2,7 @@ package com.github.springeye.droidjs
 
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
@@ -27,7 +28,7 @@ class AppAccessibilityService: AccessibilityService() {
                 var activityName = packageManager.getActivityInfo(componentName, 0).toString();
                 activityName =
                     activityName.substring(activityName.indexOf(" "), activityName.indexOf("}"));
-                Log.e("当前窗口activity", "=================$activityName");
+                Log.d("AppAccessibilityService", "当前窗口activity=================$activityName");
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace();
 
@@ -38,4 +39,15 @@ class AppAccessibilityService: AccessibilityService() {
     override fun onInterrupt() {
 
     }
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        Log.d("AppAccessibilityService", "onServiceConnected")
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        Log.d("AppAccessibilityService", "onUnbind")
+        return super.onUnbind(intent)
+    }
+
 }
