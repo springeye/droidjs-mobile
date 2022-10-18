@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.eclipsesource.v8.V8ScriptExecutionException
+import com.github.springeye.droidjs.proto.ProtoMessage.RegisterRequest
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         try {
+            RegisterRequest.newBuilder().setEmail("").setUsername("").setPassword("").build()
             val script = assets.open("tests/app.js").bufferedReader().use {
                 it.readText()
             }
