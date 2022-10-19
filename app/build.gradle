@@ -23,7 +23,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable = false
+            jniDebuggable = false
+            minifyEnabled = true
+            zipAlignEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -100,7 +104,11 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation "io.ktor:ktor-serialization-gson:$ktor_version"
     implementation("io.ktor:ktor-client-websockets:$ktor_version")
-    implementation 'com.google.protobuf:protoc:3.21.7'
+    implementation("com.google.protobuf:protoc:3.21.7")
+    implementation("com.google.protobuf:protobuf-java:3.21.7")
+//    implementation 'com.github.kigkrazy:luaj-android:3.0.3'
+
+    implementation 'com.github.springeye:luaj-android:4c90be89ed'
 
 }
 kapt {
