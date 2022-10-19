@@ -8,7 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.eclipsesource.v8.V8ScriptExecutionException
-import com.github.springeye.droidjs.luamodules.App
+import com.github.springeye.droidjs.modules.IApp
+import com.github.springeye.droidjs.modules.IUi
 import com.github.springeye.droidjs.proto.ProtoMessage
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*
@@ -18,10 +19,7 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import org.luaj.vm2.LoadState
 import org.luaj.vm2.LuaError
-import org.luaj.vm2.compiler.LuaC
-import org.luaj.vm2.lib.jse.JsePlatform
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,7 +29,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @Inject
     lateinit var lua: LuaRuntime
     @Inject
-    lateinit var app: DroidJsApplication
+    lateinit var application: DroidJsApplication
+    @Inject
+    lateinit var app:IApp
+    @Inject
+    lateinit var app1:IApp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

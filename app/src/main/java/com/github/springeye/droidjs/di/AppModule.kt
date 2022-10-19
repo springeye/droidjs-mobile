@@ -4,17 +4,14 @@ import android.app.Application
 import com.github.springeye.droidjs.DroidJsApplication
 import com.github.springeye.droidjs.JSRuntime
 import com.github.springeye.droidjs.LuaRuntime
-import com.github.springeye.droidjs.lua.LuaRuntimeLuaj
-import com.github.springeye.droidjs.luamodules.App
-import com.github.springeye.droidjs.v8.JSRuntimeV8
+import com.github.springeye.droidjs.modules.*
+import com.github.springeye.droidjs.runtime.JSRuntimeV8
+import com.github.springeye.droidjs.runtime.LuaRuntimeLuaj
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.luaj.vm2.Globals
-import org.luaj.vm2.LoadState
-import org.luaj.vm2.compiler.LuaC
-import org.luaj.vm2.lib.jse.JsePlatform
 import javax.inject.Singleton
 
 @Module
@@ -25,14 +22,24 @@ object AppModule {
     fun provideDroidJsApplication(app:Application): DroidJsApplication {
         return app as DroidJsApplication
     }
+}
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class BindSingletonModule{
+    @Binds
     @Singleton
-    @Provides
-    fun provideJSRuntime(app:DroidJsApplication): JSRuntime {
-        return JSRuntimeV8(app)
-    }
+    abstract fun bindJSRuntime(runtime:JSRuntimeV8):JSRuntime
+    @Binds
     @Singleton
-    @Provides
-    fun provideLuaRuntime(app:DroidJsApplication): LuaRuntime {
-        return LuaRuntimeLuaj(app)
-    }
+    abstract fun bindLuaRuntime(runtime:LuaRuntimeLuaj):LuaRuntime
+    @Binds
+    @Singleton
+    abstract fun bindApp(app: App):IApp
+    @Binds
+    @Singleton
+    abstract fun bindConsole(console:Console):IConsole
+    @Binds
+    @Singleton
+    abstract fun bindUi(ui:Ui):IUi
+
 }

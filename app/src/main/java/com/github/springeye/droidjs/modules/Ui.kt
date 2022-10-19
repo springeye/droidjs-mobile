@@ -1,19 +1,17 @@
-package com.github.springeye.droidjs.jsmodules
+package com.github.springeye.droidjs.modules
 
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
-import com.eclipsesource.v8.V8
-import com.eclipsesource.v8.V8Object
 import com.github.springeye.droidjs.DroidJsApplication
-import com.github.springeye.droidjs.v8.getV8Object
+import javax.inject.Inject
 
 interface IUi {
-    fun findByText(text:String):V8Object?
+    fun findByText(text:String): UiNode?
 
 }
-class Ui(private val app:DroidJsApplication,private val v8: V8):IUi{
+class Ui @Inject constructor(private val app:DroidJsApplication): IUi {
     val LOG_TAG="Ui"
-    override fun findByText(text: String):V8Object? {
+    override fun findByText(text: String): UiNode? {
         Log.d(LOG_TAG,"call findByText($text)")
         val root= app.root
         if(root==null){
@@ -25,7 +23,7 @@ class Ui(private val app:DroidJsApplication,private val v8: V8):IUi{
             .map { UiNode(app,it.viewIdResourceName) }
             .firstOrNull()
         println("findByText($text)==>${uiNode}")
-        val let = uiNode?.let { v8.getV8Object(it) }
+        val let = uiNode
         return let
     }
 

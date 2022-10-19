@@ -1,4 +1,4 @@
-package com.github.springeye.droidjs.jsmodules
+package com.github.springeye.droidjs.modules
 
 import android.util.Log
 import androidx.annotation.Keep
