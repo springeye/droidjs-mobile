@@ -1,15 +1,15 @@
 package com.github.springeye.droidjs
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -111,23 +111,34 @@ class MainActivity2 : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Greeting(name: String,viewModel:MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
-    Column() {
-        Text(text = "Hello $name!")
-        Button(onClick = {
-            viewModel.executeTest()
-        }) {
-            Text("测试")
+    Scaffold(topBar = {
+        TopAppBar(title = {
+            Text(text = "App")
+        })
+    }, content = {
+        Column(Modifier.padding(it)) {
+            Text(text = "Hello $name!")
+            Button(onClick = {
+                viewModel.executeTest()
+            }) {
+                Text("测试")
+            }
         }
-    }
+    })
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     DroidjsmobileTheme {
-        Greeting("Android")
+
+            Greeting("Android")
+
     }
 }

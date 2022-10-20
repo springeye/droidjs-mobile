@@ -18,11 +18,10 @@ class Ui @Inject constructor(private val app:DroidJsApplication): IUi {
             Log.w(LOG_TAG,"当前没有root node")
             return null
         }
-
         val uiNode = root.findAccessibilityNodeInfosByText(text)
             .map { UiNode(app,it.viewIdResourceName) }
             .firstOrNull()
-        println("findByText($text)==>${uiNode}")
+        println("findByText($text) result ==>${uiNode}")
         val let = uiNode
         return let
     }
