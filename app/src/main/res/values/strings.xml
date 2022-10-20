@@ -2,4 +2,5 @@
     <string name="app_name">My Application</string>
     <string name="accessibility_service_label">DroidJS</string>
     <string name="accessibility_service_description">DroidJS需要通过无障碍来实现免root操作您的手机</string>
+    <string name="title_activity_main2">MainActivity2</string>
 </resources>

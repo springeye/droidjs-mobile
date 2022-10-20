@@ -2,15 +2,23 @@ package com.github.springeye.droidjs
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.github.springeye.droidjs.modules.IApp
-import com.github.springeye.droidjs.modules.IUi
 import com.github.springeye.droidjs.proto.ProtoMessage
+import com.github.springeye.droidjs.ui.theme.DroidjsmobileTheme
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
@@ -21,9 +29,10 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.luaj.vm2.LuaError
 import javax.inject.Inject
+import kotlin.io.readText
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity2 : ComponentActivity() {
     @Inject
     lateinit var js: JSRuntime
     @Inject
@@ -31,25 +40,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @Inject
     lateinit var application: DroidJsApplication
     @Inject
-    lateinit var app:IApp
+    lateinit var app: IApp
     @Inject
-    lateinit var app1:IApp
+    lateinit var app1: IApp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_main)
-
-        findViewById<Button>(R.id.btn_find).setOnClickListener(this)
-        findViewById<Button>(R.id.btn_text_button).setOnClickListener {
-            Toast.makeText(this, "测试按钮被点击了", Toast.LENGTH_SHORT).show()
+        setContent {
+            DroidjsmobileTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    Greeting("Android")
+                }
+            }
         }
         lifecycleScope.launch {
             async {
-                websocketClient()
+                try {
+                    websocketClient()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
-
     private suspend fun websocketClient() {
         val client = HttpClient {
             install(WebSockets)
@@ -64,7 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val frame = incoming.receive() as? Frame.Text? ?: continue
                 val message = frame.readText()
                 println("收到服务器推送的指令  ${message}")
-                val json=JSONObject(message)
+                val json= JSONObject(message)
                 if(json.getString("type")=="script"){
                     val script = json.getString("content")
                     try {
@@ -93,22 +109,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         client.close()
         println("Connection closed. Goodbye!")
     }
-    override fun onClick(v: View?) {
+}
 
-
-        try {
-            ProtoMessage.RegisterRequest.newBuilder().setEmail("").setUsername("").setPassword("").build()
-            val script = assets.open("tests/app.js").bufferedReader().use {
-                it.readText()
-            }
-            js.exec(script)
-        } catch (e: Exception) {
-            if(e is V8ScriptExecutionException){
-                Log.w("MainActivity","${e.message}\n${e.sourceLine}\n${e.jsStackTrace}"+"\n\n")
-//                e.printStackTrace()
-            }else {
-                Log.e("MainActivity", "执行js出现错误", e)
-            }
+@Composable
+fun Greeting(name: String,viewModel:MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    Column() {
+        Text(text = "Hello $name!")
+        Button(onClick = {
+            viewModel.executeTest()
+        }) {
+            Text("测试")
         }
+    }
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    DroidjsmobileTheme {
+        Greeting("Android")
     }
 }

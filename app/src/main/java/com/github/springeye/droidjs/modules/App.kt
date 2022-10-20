@@ -2,10 +2,14 @@ package com.github.springeye.droidjs.modules
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.provider.Settings
 import android.util.Log
 import androidx.annotation.Keep
+import com.github.springeye.droidjs.BuildConfig
 import com.github.springeye.droidjs.DroidJsApplication
 import javax.inject.Inject
+
 
 @Keep
 interface IApp {
@@ -14,6 +18,11 @@ interface IApp {
     fun getPackageName(targetAppName:String):String?
     fun launch(packageName:String):Boolean
     fun launchApp(targetAppName:String):Boolean
+    fun openAppSettings(packageName: String)
+    fun uninstall(packageName: String)
+    fun openUrl(url:String)
+    val versionCode:Int
+    val versionName:String
 }
 class App @Inject constructor(private val application: DroidJsApplication): IApp {
     override fun getApkInfo(file: String) {
@@ -66,5 +75,25 @@ class App @Inject constructor(private val application: DroidJsApplication): IApp
         Log.w("App","APP not found!")
         return false
     }
+
+    override fun openAppSettings(packageName: String) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.fromParts("package", packageName, null))
+        application.startActivity(intent)
+    }
+
+    override fun uninstall(packageName: String) {
+        val intent = Intent(Intent.ACTION_DELETE,Uri.fromParts("package", packageName, null))
+        application.startActivity(intent)
+    }
+
+    override fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW,Uri.parse(url))
+        application.startActivity(intent)
+    }
+
+    override val versionCode: Int
+        get() = BuildConfig.VERSION_CODE
+    override val versionName: String
+        get() = BuildConfig.VERSION_NAME
 
 }
