@@ -18,7 +18,6 @@ class AppAccessibilityService: AccessibilityService() {
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             application.root = source
             Log.d("AppAccessibilityService", "onAccessibilityEvent=>${event.toString()}")
-
             //获取当前窗口activity名
             val componentName = ComponentName(
                 event.packageName.toString(),
