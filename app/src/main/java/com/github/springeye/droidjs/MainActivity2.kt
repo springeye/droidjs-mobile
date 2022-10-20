@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.eclipsesource.v8.V8ScriptExecutionException
@@ -122,10 +123,10 @@ fun Greeting(name: String,viewModel:MainViewModel = androidx.lifecycle.viewmodel
     }, content = {
         Column(Modifier.padding(it)) {
             Text(text = "Hello $name!")
-            Button(onClick = {
+            Button(modifier = Modifier.semantics(mergeDescendants = true) {},onClick = {
                 viewModel.executeTest()
             }) {
-                Text("测试")
+                Text("test")
             }
         }
     })
