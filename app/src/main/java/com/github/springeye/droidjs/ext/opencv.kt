@@ -21,7 +21,7 @@ private fun doMatch(screenhot:Bitmap, template:Bitmap): Bitmap? {
     val templatW=_template.cols();
     val templatH=_template.rows();
     val result = Mat(/*resultH,resultW, CvType.CV_32FC1*/)
-    Imgproc.matchTemplate(_screenhot, _template, result, Imgproc.TM_CCOEFF_NORMED)
+    Imgproc.matchTemplate(_screenhot, _template, result, Imgproc.TM_CCOEFF)
 //    Core.normalize(result, result, 0.0, 1.0, Core.NORM_MINMAX, -1, Mat())
     var mmr = Core.minMaxLoc(result);
     //在原图上的对应模板可能位置画一个绿色矩形
