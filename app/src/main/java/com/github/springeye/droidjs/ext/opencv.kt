@@ -33,24 +33,25 @@ private fun doMatch(screenhot:Bitmap, template:Bitmap): Bitmap? {
         5
     )
     Log.e("opencv", "匹配的值："+mmr.maxVal+"   ------坐标："+mmr.maxLoc.x+","+mmr.maxLoc.y);
-//    for (i in 0..7) {
-//        if (mmr.maxVal > 0.8) {   //这里是判断相似程度的
-//            mmr = getMaxLoc(_screenhot, _template, templatW, templatH, mmr.maxLoc)
-//            if (mmr.maxVal > 0.8) {
-//                Imgproc.rectangle(
-//                    _screenhot,
-//                    mmr.maxLoc,
-//                    Point(mmr.maxLoc.x + templatW, mmr.maxLoc.y + templatH),
-//                    Scalar(0.0, 255.0, 0.0),
-//                    5
-//                )
-//                Log.e(
-//                    "opencv",
-//                    "匹配的值：" + mmr.maxVal + "   ------坐标：" + mmr.maxLoc.x + "," + mmr.maxLoc.y
-//                )
-//            }
-//        }
-//    }
+    for (i in 0..7) {
+        if (mmr.maxVal > 0.8) {   //这里是判断相似程度的
+            mmr = getMaxLoc(_screenhot, _template, templatW, templatH, mmr.maxLoc)
+            if (mmr.maxVal > 0.8) {
+                Imgproc.rectangle(
+                    _screenhot,
+                    mmr.maxLoc,
+                    Point(mmr.maxLoc.x + templatW, mmr.maxLoc.y + templatH),
+                    Scalar(0.0, 255.0, 0.0),
+                    5
+                )
+
+            }
+        }
+        Log.e(
+            "opencv",
+            "匹配的值：" + mmr.maxVal + "   ------坐标：" + mmr.maxLoc.x + "," + mmr.maxLoc.y
+        )
+    }
     val resultBitmap=Bitmap.createBitmap(screenhot.width,screenhot.height,Bitmap.Config.ARGB_8888)
     Utils.matToBitmap(_screenhot,resultBitmap)
     _template.release()
