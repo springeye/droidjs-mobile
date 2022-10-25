@@ -1,24 +1,35 @@
 package com.github.springeye.droidjs
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.eclipsesource.v8.V8ScriptExecutionException
+import com.github.springeye.droidjs.ext.match
 import com.github.springeye.droidjs.modules.IApp
-import com.github.springeye.droidjs.proto.ProtoMessage
 import com.github.springeye.droidjs.ui.theme.DroidjsmobileTheme
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*
@@ -29,8 +40,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.luaj.vm2.LuaError
+import org.opencv.android.Utils
+import org.opencv.core.*
 import javax.inject.Inject
-import kotlin.io.readText
 
 @AndroidEntryPoint
 class MainActivity2 : ComponentActivity() {
@@ -44,6 +56,10 @@ class MainActivity2 : ComponentActivity() {
     lateinit var app: IApp
     @Inject
     lateinit var app1: IApp
+    var mRgb:Mat?=null
+    var mTemplate:Mat?=null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -116,23 +132,68 @@ class MainActivity2 : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Greeting(name: String,viewModel:MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val context= LocalContext.current
+    var screenhot:Bitmap by remember {
+        mutableStateOf(BitmapFactory.decodeStream(context.assets.open("screenhot.jpeg")).let { it.copy(it.config,true) })
+    }
+    var template:Bitmap by remember {
+                mutableStateOf(BitmapFactory.decodeStream(context.assets.open("target3.png")).let { it.copy(it.config,true) })
+//        mutableStateOf(BitmapFactory.decodeStream(context.assets.open("target2.png")).let { it.copy(it.config,true) })
+    }
+    var result:Bitmap? by remember {
+        mutableStateOf(null)
+    }
+    fun findBitmap(){
+        result=screenhot.match(template)
+//        template.recycle()
+//        target.recycle()
+    }
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(text = "App")
         })
     }, content = {
-        Column(Modifier.padding(it)) {
+        Column(
+            Modifier
+                .padding(it)
+                .verticalScroll(rememberScrollState())) {
             Text(text = "Hello $name!")
+            Text("小图")
+            Image(bitmap = template.asImageBitmap(), contentDescription = "小图")
+            ShowImage(screenhot,template,result)
             Button(modifier = Modifier.semantics(mergeDescendants = true) {},onClick = {
                 viewModel.executeTest()
             }) {
-                Text("test")
+                Text("执行本地代码")
+            }
+            Button(modifier = Modifier.semantics(mergeDescendants = true) {},onClick = {
+                findBitmap()
+            }) {
+                Text("匹配图片")
             }
         }
     })
 
 }
 
+@Composable
+fun ShowImage(target:Bitmap,template:Bitmap,result:Bitmap?) {
+    Row() {
+        Column(modifier = Modifier.weight(1f)) {
+            Text("大图")
+            Image(bitmap = target.asImageBitmap(), contentDescription = "大图")
+        }
+        Column(modifier = Modifier.weight(1f)) {
+
+            Text("结果")
+            if(result!=null) {
+                Image(bitmap = result.asImageBitmap(), contentDescription = "结果")
+            }
+        }
+    }
+
+
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
