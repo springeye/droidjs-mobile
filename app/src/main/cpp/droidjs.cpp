@@ -21,6 +21,7 @@
 #include <cstdlib>
 #include "node.h"
 #include "redirecting_ouput.h"
+#include "uv.h"
 //const char *ADBTAG = "nodejs";
 //extern char ADBTAG[]="nodejs";
 extern "C"
@@ -65,6 +66,7 @@ Java_com_github_springeye_droidjs_runtime_NodeJSRuntime_startNodeWithArguments(J
     if (start_redirecting_stdout_stderr()==-1) {
         __android_log_write(ANDROID_LOG_ERROR, LOG_TAG, "Couldn't start redirecting stdout and stderr to logcat.");
     }
+
     //Start node, with argc and argv.
     int node_result = node::Start(argument_count, argv);
     free(args_buffer);
