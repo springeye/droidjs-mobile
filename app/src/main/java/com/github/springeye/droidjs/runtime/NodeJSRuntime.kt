@@ -17,7 +17,9 @@ class NodeJSRuntime @Inject constructor(): JSRuntime {
         Log.d("NodeJSRuntime","执行脚本....")
         return startNodeWithArguments(arrayOf("node","-e",script))
     }
-
+    suspend fun run(dir:String): Int {
+        return startNodeWithArguments(arrayOf("node",dir))
+    }
     override suspend fun close() {
         TODO("Not yet implemented")
     }
