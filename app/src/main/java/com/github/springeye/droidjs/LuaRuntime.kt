@@ -1,6 +1,6 @@
 package com.github.springeye.droidjs
 
 interface LuaRuntime {
-    fun exec(script:String):Any
-    fun close()
+    suspend fun exec(script:String):Any
+    suspend fun close()
 }

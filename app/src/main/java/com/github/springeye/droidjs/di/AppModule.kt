@@ -7,6 +7,7 @@ import com.github.springeye.droidjs.LuaRuntime
 import com.github.springeye.droidjs.modules.*
 import com.github.springeye.droidjs.runtime.JSRuntimeV8
 import com.github.springeye.droidjs.runtime.LuaRuntimeLuaj
+import com.github.springeye.droidjs.runtime.NodeJSRuntime
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -29,7 +30,7 @@ object AppModule {
 abstract class BindSingletonModule{
     @Binds
     @Singleton
-    abstract fun bindJSRuntime(runtime:JSRuntimeV8):JSRuntime
+    abstract fun bindJSRuntime(runtime:NodeJSRuntime):JSRuntime
     @Binds
     @Singleton
     abstract fun bindLuaRuntime(runtime:LuaRuntimeLuaj):LuaRuntime

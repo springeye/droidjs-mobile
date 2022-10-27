@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
-import com.eclipsesource.v8.V8ScriptExecutionException
 import com.github.springeye.droidjs.ext.match
 import com.github.springeye.droidjs.modules.IApp
 import com.github.springeye.droidjs.ui.theme.DroidjsmobileTheme

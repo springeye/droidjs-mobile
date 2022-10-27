@@ -72,7 +72,7 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
 
 
     }
-    override fun exec(script: String):Any? {
+    override suspend fun exec(script: String):Any? {
         val v8: V8=V8.createV8Runtime()
         val registedModule=setup(v8)
         val result = try {
@@ -91,7 +91,7 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
             o.close()
         }
     }
-    override fun close() {
+    override suspend fun close() {
 
     }
 }

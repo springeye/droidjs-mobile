@@ -21,7 +21,6 @@ import org.luaj.vm2.compiler.LuaC
 import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.jse.JsePlatform
 import javax.inject.Inject
-
 class LuaRuntimeLuaj @Inject constructor(val application: DroidJsApplication,
                                          val ui: IUi,
                                          val app: IApp,
@@ -69,12 +68,12 @@ class LuaRuntimeLuaj @Inject constructor(val application: DroidJsApplication,
             LuaC.install(this)
         }
     }
-    override fun exec(script: String): Any {
+    override suspend fun exec(script: String): Any {
         val lua = setup()
         return lua.load(script).call()
     }
 
-    override fun close() {
+    override suspend fun close() {
         TODO("Not yet implemented")
     }
 }
