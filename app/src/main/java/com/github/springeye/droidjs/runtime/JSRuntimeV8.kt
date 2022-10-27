@@ -13,9 +13,11 @@ import com.github.springeye.droidjs.DroidJsApplication
 import com.github.springeye.droidjs.JSRuntime
 import com.github.springeye.droidjs.js.AppJs
 import com.github.springeye.droidjs.js.ConsoleJs
+import com.github.springeye.droidjs.js.ImageJs
 import com.github.springeye.droidjs.js.UiJs
 import com.github.springeye.droidjs.modules.IApp
 import com.github.springeye.droidjs.modules.IConsole
+import com.github.springeye.droidjs.modules.IImage
 import com.github.springeye.droidjs.modules.IUi
 import registerJavaObject
 import javax.inject.Inject
@@ -25,6 +27,7 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
                                        val ui:IUi,
                                        val app:IApp,
                                        val console:IConsole,
+                                       val image:IImage,
 ) : JSRuntime {
     private fun checkDialogPermission(): Boolean {
         return if(Settings.canDrawOverlays(application)){
@@ -63,12 +66,13 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
             v8.registerJavaObject("app",AppJs(app)),
             v8.registerJavaObject("console",ConsoleJs(console)),
             v8.registerJavaObject("ui",UiJs(ui,v8)),
+            v8.registerJavaObject("image",ImageJs(image,v8)),
         )
 
 
 
     }
-    override fun exec(script: String):Any {
+    override fun exec(script: String):Any? {
         val v8: V8=V8.createV8Runtime()
         val registedModule=setup(v8)
         val result = try {

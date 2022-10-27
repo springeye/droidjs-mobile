@@ -137,7 +137,7 @@ fun Greeting(name: String,viewModel:MainViewModel = androidx.lifecycle.viewmodel
         mutableStateOf(BitmapFactory.decodeStream(context.assets.open("screenhot.jpeg")).let { it.copy(it.config,true) })
     }
     var template:Bitmap by remember {
-                mutableStateOf(BitmapFactory.decodeStream(context.assets.open("target3.png")).let { it.copy(it.config,true) })
+                mutableStateOf(BitmapFactory.decodeStream(context.assets.open("target.png")).let { it.copy(it.config,true) })
 //        mutableStateOf(BitmapFactory.decodeStream(context.assets.open("target2.png")).let { it.copy(it.config,true) })
     }
     var result:Bitmap? by remember {

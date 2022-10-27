@@ -2,59 +2,63 @@ package com.github.springeye.droidjs.ext
 
 import android.graphics.Bitmap
 import android.util.Log
+import com.github.springeye.droidjs.DroidJsApplication
+import com.github.springeye.droidjs.ScreenMetrics
 import org.opencv.android.Utils
 import org.opencv.core.*
 import org.opencv.core.Core.MinMaxLocResult
+import org.opencv.imgcodecs.Imgcodecs
 import org.opencv.imgproc.Imgproc
+import java.io.File
 
 
 fun Bitmap.match(template:Bitmap): Bitmap? {
 
     return doMatch(this.copy(this.config,true),template.copy(template.config,true))
 }
-private fun doMatch(screenhot:Bitmap, template:Bitmap): Bitmap? {
-
+private fun doMatch(screenhot:Bitmap, small:Bitmap): Bitmap? {
+    val  THRESHOLD = 0.95;
+    val TAG="opencv"
     val _screenhot = Mat()//待匹配的图
-    val _template = Mat()//模板图
-    Utils.bitmapToMat(template,_template)
+    val _small = Mat()//模板图
+    Utils.bitmapToMat(small,_small)
     Utils.bitmapToMat(screenhot,_screenhot)
-    val templatW=_template.cols();
-    val templatH=_template.rows();
-    val result = Mat(/*resultH,resultW, CvType.CV_32FC1*/)
-    Imgproc.matchTemplate(_screenhot, _template, result, Imgproc.TM_CCOEFF)
-//    Core.normalize(result, result, 0.0, 1.0, Core.NORM_MINMAX, -1, Mat())
-    var mmr = Core.minMaxLoc(result);
+    val templatW=_small.cols();
+    val templatH=_small.rows();
+
+
+    val result_cols: Int = _screenhot.cols() - _small.cols() + 1
+    val result_rows: Int = _screenhot.rows() - _small.rows() + 1
+    val result = Mat(result_rows,result_cols, CvType.CV_32FC1)
+//    Imgproc.matchTemplate(_screenhot,_small, result, Imgproc.TM_CCORR_NORMED)
+    Imgproc.matchTemplate(_screenhot,_small, result, Imgproc.TM_CCOEFF_NORMED)
+    Core.normalize(result, result, 0.0, 1.0, Core.NORM_MINMAX, -1, Mat())
+    val mmr = Core.minMaxLoc(result);
+    val matchLoc=mmr.maxLoc
+    Log.i("opencv", "Match percentage : " + mmr.maxVal);
     //在原图上的对应模板可能位置画一个绿色矩形
     Imgproc.rectangle(
         _screenhot,
-        mmr.maxLoc,
-        Point(mmr.maxLoc.x + templatW, mmr.maxLoc.y + templatH),
+        matchLoc,
+        Point(matchLoc.x + templatW, matchLoc.y + templatH),
         Scalar(0.0, 255.0, 0.0),
-        5
+        8
     )
-    Log.e("opencv", "匹配的值："+mmr.maxVal+"   ------坐标："+mmr.maxLoc.x+","+mmr.maxLoc.y);
-    for (i in 0..7) {
-        if (mmr.maxVal > 0.8) {   //这里是判断相似程度的
-            mmr = getMaxLoc(_screenhot, _template, templatW, templatH, mmr.maxLoc)
-            if (mmr.maxVal > 0.8) {
-                Imgproc.rectangle(
-                    _screenhot,
-                    mmr.maxLoc,
-                    Point(mmr.maxLoc.x + templatW, mmr.maxLoc.y + templatH),
-                    Scalar(0.0, 255.0, 0.0),
-                    5
-                )
-
-            }
-        }
-        Log.e(
-            "opencv",
-            "匹配的值：" + mmr.maxVal + "   ------坐标：" + mmr.maxLoc.x + "," + mmr.maxLoc.y
-        )
+    if (mmr.maxVal >= THRESHOLD) {
+        Log.i(TAG, "matchImages: Match percentage is above the THRESHOLD.");
+        Log.i(TAG, "matchImages: ###### Found match . ######");
+    } else {
+        Log.w(TAG, "matchImages: Match percentage is below the THRESHOLD!!!");
+        Log.w(TAG, "matchImages: ****** None match . ******");
     }
+    val app = DroidJsApplication.app
+    if(app !=null){
+        Imgcodecs.imwrite(File(app.filesDir,"result.jpeg").toString(),_screenhot)
+    }
+
     val resultBitmap=Bitmap.createBitmap(screenhot.width,screenhot.height,Bitmap.Config.ARGB_8888)
     Utils.matToBitmap(_screenhot,resultBitmap)
-    _template.release()
+    _small.release()
     _screenhot.release()
     return resultBitmap
 

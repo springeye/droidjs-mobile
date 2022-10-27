@@ -19,7 +19,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.github.springeye.droidjs.DroidTestRunner"
         ndk {
 //            abiFilters 'arm64-v8a', 'x86_64'
             abiFilters 'arm64-v8a'
@@ -27,8 +28,18 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
-    }
 
+    }
+    splits {
+
+        density {
+            enable true
+            // Resets the list of ABIs that Gradle should create APKs for to none.
+            reset()
+            include "x86","x86_64","armeabi-v7a","arm64-v8a"
+//            include "armeabi-v7a","arm64-v8a"
+        }
+    }
     buildTypes {
         release {
             debuggable = false
@@ -163,6 +174,7 @@ dependencies {
 
     implementation "com.quickbirdstudios:opencv:4.5.3.0"
 //    implementation "com.quickbirdstudios:opencv-contrib:4.5.3.0"
+//    implementation 'com.google.mlkit:object-detection:17.0.0'
 
 
 

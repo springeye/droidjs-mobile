@@ -11,6 +11,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -41,5 +42,8 @@ abstract class BindSingletonModule{
     @Binds
     @Singleton
     abstract fun bindUi(ui:Ui):IUi
+    @Binds
+    @Singleton
+    abstract fun bindImage(image:Image):IImage
 
 }

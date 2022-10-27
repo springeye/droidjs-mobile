@@ -13,11 +13,13 @@ class MainViewModel @Inject constructor(application: DroidJsApplication,val lua:
 
     fun executeTest(){
         try {
-            ProtoMessage.RegisterRequest.newBuilder().setEmail("").setUsername("").setPassword("").build()
-            val script = getApplication<DroidJsApplication>().assets.open("tests/app.js").bufferedReader().use {
-                it.readText()
-            }
-            js.exec(script)
+//            ProtoMessage.RegisterRequest.newBuilder().setEmail("").setUsername("").setPassword("").build()
+//            val script = getApplication<DroidJsApplication>().assets.open("tests/app.js").bufferedReader().use {
+//                it.readText()
+//            }
+//            js.exec(script)
+//            js.exec("image.read('./test.png');")
+            js.exec("const resolve = require('path').resolve;console.log(resolve('./test.png'));")
         } catch (e: Exception) {
             if(e is V8ScriptExecutionException){
                 Log.w("MainActivity","${e.message}\n${e.sourceLine}\n${e.jsStackTrace}"+"\n\n")
