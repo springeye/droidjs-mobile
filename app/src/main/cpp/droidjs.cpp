@@ -20,7 +20,9 @@
 #include <string>
 #include <cstdlib>
 #include "node.h"
-
+#include "redirecting_ouput.h"
+//const char *ADBTAG = "nodejs";
+//extern char ADBTAG[]="nodejs";
 extern "C"
 JNIEXPORT jint  JNICALL
 Java_com_github_springeye_droidjs_runtime_NodeJSRuntime_startNodeWithArguments(JNIEnv *env,
@@ -60,7 +62,9 @@ Java_com_github_springeye_droidjs_runtime_NodeJSRuntime_startNodeWithArguments(J
         //Increment to the next argument's expected position.
         current_args_position += strlen(current_args_position) + 1;
     }
-
+    if (start_redirecting_stdout_stderr()==-1) {
+        __android_log_write(ANDROID_LOG_ERROR, LOG_TAG, "Couldn't start redirecting stdout and stderr to logcat.");
+    }
     //Start node, with argc and argv.
     int node_result = node::Start(argument_count, argv);
     free(args_buffer);

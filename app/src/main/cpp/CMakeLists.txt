@@ -23,12 +23,13 @@ set_target_properties( # Specifies the target library.
 
 
 include_directories(${CMAKE_SOURCE_DIR}/../../../libnode/include/node/)
+#include_directories(${CMAKE_SOURCE_DIR})
 add_library( # Sets the name of the library.
              droidjs
 
              # Sets the library as a shared library.
              SHARED
-
+            redirecting_ouput.cpp
              # Provides a relative path to your source file(s).
              droidjs.cpp )
 
