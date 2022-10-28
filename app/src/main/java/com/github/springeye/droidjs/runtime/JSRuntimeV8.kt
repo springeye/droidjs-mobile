@@ -6,6 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.view.WindowManager
 import android.widget.Toast
+import com.eclipsesource.v8.NodeJS
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 import com.eclipsesource.v8.V8Value
@@ -73,6 +74,7 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
 
     }
     override suspend fun exec(script: String):Any? {
+
         val v8: V8=V8.createV8Runtime()
         val registedModule=setup(v8)
         val result = try {

@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(application: DroidJsApplication,
 
                 val app = getApplication<DroidJsApplication>()
                 app.copyFileOrDir("examples/nodejs")
-                node.run(File(app.filesDir,"examples/nodejs").toString())
+                node.run(File(app.filesDir,"examples/nodejs/").toString())
             }
 
         } catch (e: Exception) {
