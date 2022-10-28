@@ -18,3 +18,4 @@ rootProject.name = "droidjs-mobile"
 include ':app'
 include ':nodejs'
 include ':base'
+include ':j2v8'
