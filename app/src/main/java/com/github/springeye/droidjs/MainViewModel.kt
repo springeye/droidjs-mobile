@@ -4,22 +4,16 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.eclipsesource.v8.V8ScriptExecutionException
-import com.github.springeye.droidjs.proto.ProtoMessage
-import com.github.springeye.droidjs.runtime.JSRuntimeV8
-import com.github.springeye.droidjs.runtime.NodeJSRuntime
 import com.github.springeye.droidjs.utils.copyFileOrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(application: DroidJsApplication,
-                                        val lua: LuaRuntime,
-                                        val js: JSRuntimeV8,
-                                        val node: NodeJSRuntime,
+                                        val runtime: ScriptRuntime,
 ) : AndroidViewModel(application) {
 
     fun executeTest(){
@@ -42,7 +36,7 @@ class MainViewModel @Inject constructor(application: DroidJsApplication,
 
                 val app = getApplication<DroidJsApplication>()
                 app.copyFileOrDir("examples/nodejs")
-                node.run(File(app.filesDir,"examples/nodejs/").toString())
+                runtime.run(File(app.filesDir,"examples/nodejs/"),ScriptRuntime.Type.JS)
             }
 
         } catch (e: Exception) {

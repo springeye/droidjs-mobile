@@ -29,9 +29,9 @@ int RunNodeInstance(node::MultiIsolatePlatform *pPlatform, std::vector<std::stri
 
 extern "C"
 JNIEXPORT jint  JNICALL
-Java_com_github_springeye_droidjs_runtime_NodeJSRuntime_startNodeWithArguments(JNIEnv *env,
-                                                                               jobject thiz,
-                                                                               jobjectArray arguments) {
+Java_com_github_springeye_droidjs_runtime_NodeScriptRuntime_startNodeWithArguments(JNIEnv *env,
+                                                                                   jobject thiz,
+                                                                                   jobjectArray arguments) {
 
     //argc
     jsize argument_count = env->GetArrayLength(arguments);

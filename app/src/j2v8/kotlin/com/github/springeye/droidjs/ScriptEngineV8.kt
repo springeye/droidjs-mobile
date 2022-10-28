@@ -1,4 +1,4 @@
-package com.github.springeye.droidjs.runtime
+package com.github.springeye.droidjs
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -6,12 +6,10 @@ import android.net.Uri
 import android.provider.Settings
 import android.view.WindowManager
 import android.widget.Toast
-import com.eclipsesource.v8.NodeJS
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
-import com.eclipsesource.v8.V8Value
 import com.github.springeye.droidjs.DroidJsApplication
-import com.github.springeye.droidjs.JSRuntime
+import com.github.springeye.droidjs.ScriptRuntime
 import com.github.springeye.droidjs.js.AppJs
 import com.github.springeye.droidjs.js.ConsoleJs
 import com.github.springeye.droidjs.js.ImageJs
@@ -25,12 +23,12 @@ import java.io.File
 import javax.inject.Inject
 
 
-class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
-                                       val ui:IUi,
-                                       val app:IApp,
-                                       val console:IConsole,
-                                       val image:IImage,
-) : JSRuntime {
+class ScriptEngineV8 @Inject constructor (val application: DroidJsApplication,
+                                          val ui:IUi,
+                                          val app:IApp,
+                                          val console:IConsole,
+                                          val image:IImage,
+) : ScriptRuntime {
     private fun checkDialogPermission(): Boolean {
         return if(Settings.canDrawOverlays(application)){
             true;
@@ -75,7 +73,13 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
 
     }
 
-    override suspend fun exec(script: String):Any? {
+    private fun release(obj: List<V8Object>){
+        for (o in obj) {
+            o.close()
+        }
+    }
+
+    override suspend fun exec(script: String, type: ScriptRuntime.Type): Any? {
 
         val v8: V8=V8.createV8Runtime()
         val registedModule=setup(v8)
@@ -90,11 +94,11 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
 
         return result
     }
-    private fun release(obj: List<V8Object>){
-        for (o in obj) {
-            o.close()
-        }
+
+    override suspend fun run(file: File, type: ScriptRuntime.Type) {
+        TODO("Not yet implemented")
     }
+
     override suspend fun close() {
 
     }

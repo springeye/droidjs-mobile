@@ -2,17 +2,11 @@ package com.github.springeye.droidjs.di
 
 import android.app.Application
 import com.github.springeye.droidjs.DroidJsApplication
-import com.github.springeye.droidjs.JSRuntime
-import com.github.springeye.droidjs.LuaRuntime
 import com.github.springeye.droidjs.modules.*
-import com.github.springeye.droidjs.runtime.JSRuntimeV8
-import com.github.springeye.droidjs.runtime.LuaRuntimeLuaj
-import com.github.springeye.droidjs.runtime.NodeJSRuntime
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -28,12 +22,6 @@ object AppModule {
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class BindSingletonModule{
-    @Binds
-    @Singleton
-    abstract fun bindJSRuntime(runtime:NodeJSRuntime):JSRuntime
-    @Binds
-    @Singleton
-    abstract fun bindLuaRuntime(runtime:LuaRuntimeLuaj):LuaRuntime
     @Binds
     @Singleton
     abstract fun bindApp(app: App):IApp

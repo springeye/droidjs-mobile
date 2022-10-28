@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
-import com.eclipsesource.v8.NodeJS
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.github.springeye.droidjs.ext.match
 import com.github.springeye.droidjs.modules.IApp
@@ -41,14 +40,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.luaj.vm2.LuaError
-import org.opencv.android.Utils
 import org.opencv.core.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity2 : ComponentActivity() {
     @Inject
-    lateinit var js: JSRuntime
+    lateinit var js: ScriptRuntime
     @Inject
     lateinit var lua: LuaRuntime
     @Inject

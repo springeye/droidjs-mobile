@@ -7,8 +7,7 @@ import android.provider.Settings
 import android.view.WindowManager
 import android.widget.Toast
 import com.github.springeye.droidjs.DroidJsApplication
-import com.github.springeye.droidjs.LuaRuntime
-import com.github.springeye.droidjs.modules.App
+import com.github.springeye.droidjs.ScriptRuntime
 import com.github.springeye.droidjs.lua.AppLua
 import com.github.springeye.droidjs.lua.UiLua
 import com.github.springeye.droidjs.modules.IApp
@@ -20,12 +19,13 @@ import org.luaj.vm2.LuaValue
 import org.luaj.vm2.compiler.LuaC
 import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.jse.JsePlatform
+import java.io.File
 import javax.inject.Inject
-class LuaRuntimeLuaj @Inject constructor(val application: DroidJsApplication,
-                                         val ui: IUi,
-                                         val app: IApp,
-                                         val console: IConsole,
-):LuaRuntime {
+class ScriptEngineLuaj @Inject constructor(val application: DroidJsApplication,
+                                           val ui: IUi,
+                                           val app: IApp,
+                                           val console: IConsole,
+): ScriptRuntime {
     private fun checkDialogPermission(): Boolean {
         return if(Settings.canDrawOverlays(application)){
             true;
@@ -68,9 +68,15 @@ class LuaRuntimeLuaj @Inject constructor(val application: DroidJsApplication,
             LuaC.install(this)
         }
     }
-    override suspend fun exec(script: String): Any {
+
+
+    override suspend fun exec(script: String, type: ScriptRuntime.Type): Any? {
         val lua = setup()
         return lua.load(script).call()
+    }
+
+    override suspend fun run(file: File, type: ScriptRuntime.Type) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun close() {

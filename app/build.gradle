@@ -15,9 +15,10 @@ android {
             jniLibs.srcDirs 'libnode/bin/'
         }
     }
+    flavorDimensions "version"
     productFlavors{
         j2v8{}
-        lua{}
+        luaj{}
         nodejs{}
     }
     defaultConfig {
