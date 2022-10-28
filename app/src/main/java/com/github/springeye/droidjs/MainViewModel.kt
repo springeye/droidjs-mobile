@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(application: DroidJsApplication,
                                         val lua: LuaRuntime,
-                                        val js: JSRuntime,
+                                        val js: JSRuntimeV8,
                                         val node: NodeJSRuntime,
 ) : AndroidViewModel(application) {
 

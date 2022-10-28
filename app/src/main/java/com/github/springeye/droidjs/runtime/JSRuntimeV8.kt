@@ -21,6 +21,7 @@ import com.github.springeye.droidjs.modules.IConsole
 import com.github.springeye.droidjs.modules.IImage
 import com.github.springeye.droidjs.modules.IUi
 import registerJavaObject
+import java.io.File
 import javax.inject.Inject
 
 
@@ -73,6 +74,7 @@ class JSRuntimeV8 @Inject constructor (val application: DroidJsApplication,
 
 
     }
+
     override suspend fun exec(script: String):Any? {
 
         val v8: V8=V8.createV8Runtime()
