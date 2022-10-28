@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "droidjs-mobile"
 include ':app'
+include ':nodejs'
+include ':base'

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.eclipsesource.v8.V8ScriptExecutionException
+import com.github.springeye.droidjs.base.ScriptRuntime
 import com.github.springeye.droidjs.utils.copyFileOrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

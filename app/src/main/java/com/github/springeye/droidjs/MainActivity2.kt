@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.eclipsesource.v8.V8ScriptExecutionException
+import com.github.springeye.droidjs.base.ScriptRuntime
 import com.github.springeye.droidjs.ext.match
 import com.github.springeye.droidjs.modules.IApp
 import com.github.springeye.droidjs.ui.theme.DroidjsmobileTheme
@@ -47,8 +48,6 @@ import javax.inject.Inject
 class MainActivity2 : ComponentActivity() {
     @Inject
     lateinit var js: ScriptRuntime
-    @Inject
-    lateinit var lua: LuaRuntime
     @Inject
     lateinit var application: DroidJsApplication
     @Inject
@@ -101,9 +100,9 @@ class MainActivity2 : ComponentActivity() {
                     val script = json.getString("content")
                     try {
                         if(json.getString("lang")=="lua"){
-                            lua.exec(script);
+                            js.exec(script,ScriptRuntime.Type.LUA);
                         }else if(json.getString("lang")=="js") {
-                            js.exec(script);
+                            js.exec(script,ScriptRuntime.Type.JS);
                         }
                     } catch (e: Exception) {
                         when (e) {
