@@ -21,6 +21,12 @@ object AppModule {
     fun provideDroidJsApplication(app:Application): DroidJsApplication {
         return app as DroidJsApplication
     }
+    @Singleton
+    @Provides
+    fun provideUINoteProvider(app:DroidJsApplication): UINoteProvider {
+        return app
+    }
+
 }
 @Module
 @InstallIn(SingletonComponent::class)

@@ -1,5 +1,6 @@
 package com.github.springeye.droidjs.modules
 
+import android.app.Application
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -12,7 +13,7 @@ import com.github.springeye.droidjs.base.modules.IApp
 import javax.inject.Inject
 
 
-class App @Inject constructor(private val application: DroidJsApplication): IApp {
+class App @Inject constructor(private val application: Application): IApp {
     override fun getApkInfo(file: String) {
         TODO("Not yet implemented")
     }
