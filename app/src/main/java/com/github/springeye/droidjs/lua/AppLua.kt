@@ -2,8 +2,7 @@ package com.github.springeye.droidjs.lua
 
 import android.util.Log
 import com.github.springeye.droidjs.DroidJsApplication
-import com.github.springeye.droidjs.modules.App
-import com.github.springeye.droidjs.modules.IApp
+import com.github.springeye.droidjs.base.modules.IApp
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.TwoArgFunction

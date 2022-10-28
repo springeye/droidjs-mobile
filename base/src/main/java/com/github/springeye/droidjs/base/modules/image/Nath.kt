@@ -1,4 +1,4 @@
-package com.github.springeye.droidjs.utils
+package com.github.springeye.droidjs.base.modules.image
 
 /**
  * Created by Stardust on 2017/11/26.

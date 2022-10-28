@@ -2,6 +2,9 @@ package com.github.springeye.droidjs.di
 
 import android.app.Application
 import com.github.springeye.droidjs.DroidJsApplication
+import com.github.springeye.droidjs.base.modules.IApp
+import com.github.springeye.droidjs.base.modules.IConsole
+import com.github.springeye.droidjs.base.modules.IImage
 import com.github.springeye.droidjs.modules.*
 import dagger.Binds
 import dagger.Module
@@ -24,15 +27,15 @@ object AppModule {
 abstract class BindSingletonModule{
     @Binds
     @Singleton
-    abstract fun bindApp(app: App):IApp
+    abstract fun bindApp(app: App): IApp
     @Binds
     @Singleton
-    abstract fun bindConsole(console:Console):IConsole
+    abstract fun bindConsole(console: Console): IConsole
     @Binds
     @Singleton
     abstract fun bindUi(ui:Ui):IUi
     @Binds
     @Singleton
-    abstract fun bindImage(image:Image):IImage
+    abstract fun bindImage(image: Image): IImage
 
 }

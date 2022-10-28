@@ -1,7 +1,6 @@
-package com.github.springeye.droidjs.modules.image
+package com.github.springeye.droidjs.base.modules.image
 
 import android.util.TimingLogger
-import com.github.springeye.droidjs.utils.Nath
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 

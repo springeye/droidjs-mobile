@@ -30,7 +30,7 @@ import androidx.lifecycle.lifecycleScope
 import com.eclipsesource.v8.V8ScriptExecutionException
 import com.github.springeye.droidjs.base.ScriptRuntime
 import com.github.springeye.droidjs.ext.match
-import com.github.springeye.droidjs.modules.IApp
+import com.github.springeye.droidjs.base.modules.IApp
 import com.github.springeye.droidjs.ui.theme.DroidjsmobileTheme
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*

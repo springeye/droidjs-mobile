@@ -8,22 +8,10 @@ import android.util.Log
 import androidx.annotation.Keep
 import com.github.springeye.droidjs.BuildConfig
 import com.github.springeye.droidjs.DroidJsApplication
+import com.github.springeye.droidjs.base.modules.IApp
 import javax.inject.Inject
 
 
-@Keep
-interface IApp {
-    fun getApkInfo(file:String)
-    fun getAppName(packageName:String):String?
-    fun getPackageName(targetAppName:String):String?
-    fun launch(packageName:String):Boolean
-    fun launchApp(targetAppName:String):Boolean
-    fun openAppSettings(packageName: String)
-    fun uninstall(packageName: String)
-    fun openUrl(url:String)
-    val versionCode:Int
-    val versionName:String
-}
 class App @Inject constructor(private val application: DroidJsApplication): IApp {
     override fun getApkInfo(file: String) {
         TODO("Not yet implemented")

@@ -1,4 +1,4 @@
-package com.github.springeye.droidjs.modules.image
+package com.github.springeye.droidjs.base.modules.image
 
 import android.graphics.Bitmap
 import android.graphics.Color

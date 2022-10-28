@@ -13,9 +13,9 @@ import com.github.springeye.droidjs.js.AppJs
 import com.github.springeye.droidjs.js.ConsoleJs
 import com.github.springeye.droidjs.js.ImageJs
 import com.github.springeye.droidjs.js.UiJs
-import com.github.springeye.droidjs.modules.IApp
-import com.github.springeye.droidjs.modules.IConsole
-import com.github.springeye.droidjs.modules.IImage
+import com.github.springeye.droidjs.base.modules.IApp
+import com.github.springeye.droidjs.base.modules.IConsole
+import com.github.springeye.droidjs.base.modules.IImage
 import com.github.springeye.droidjs.modules.IUi
 import registerJavaObject
 import java.io.File
@@ -24,9 +24,9 @@ import javax.inject.Inject
 
 class ScriptEngineV8 @Inject constructor (val application: DroidJsApplication,
                                           val ui:IUi,
-                                          val app:IApp,
-                                          val console:IConsole,
-                                          val image:IImage,
+                                          val app: IApp,
+                                          val console: IConsole,
+                                          val image: IImage,
 ) : ScriptRuntime {
     private fun checkDialogPermission(): Boolean {
         return if(Settings.canDrawOverlays(application)){
