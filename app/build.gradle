@@ -15,7 +15,11 @@ android {
             jniLibs.srcDirs 'libnode/bin/'
         }
     }
-
+    productFlavors{
+        j2v8{}
+        lua{}
+        nodejs{}
+    }
     defaultConfig {
         applicationId "com.github.springeye.droidjs"
         minSdk 26
