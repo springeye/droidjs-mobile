@@ -9,6 +9,9 @@ import org.luaj.vm2.lib.TwoArgFunction
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
 class UiLua  constructor(private val application: Application, private val ui: IUi): TwoArgFunction() {
+    companion object{
+        val LOG_TAG="UiLua_Native"
+    }
     override fun call(modname: LuaValue?, env: LuaValue?): LuaValue {
         val library= tableOf()
         library.set("findByText", FindByTextFunc(ui))
@@ -21,7 +24,7 @@ class UiLua  constructor(private val application: Application, private val ui: I
     class FindByTextFunc( private val ui: IUi): OneArgFunction() {
         override fun call(arg: LuaValue?): LuaValue {
             val text = arg?.checkstring()?.tojstring()
-            Log.d("FindByTextFunc","text=>$text")
+            Log.d(LOG_TAG,"FindByTextFunc   "+"   text=>$text")
             if(text==null) return LuaValue.NIL
             val node=ui.findByText(text)
             if(node!=null) {
