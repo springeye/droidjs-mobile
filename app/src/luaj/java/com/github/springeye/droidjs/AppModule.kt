@@ -1,6 +1,8 @@
-package com.github.springeye.droidjs.di
-import com.github.springeye.droidjs.ScriptEngineLuaj
+package com.github.springeye.droidjs
+
 import com.github.springeye.droidjs.base.ScriptRuntime
+import com.github.springeye.droidjs.base.modules.*
+import com.github.springeye.droidjs.modules.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -9,8 +11,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class BindModule {
-    @Binds
+abstract class AppModule {
     @Singleton
-    abstract fun bindV8Runtime(runtime: ScriptEngineLuaj): ScriptRuntime
+    @Binds
+    abstract fun providerScriptRuntime(impl:ScriptEngineWrapper):ScriptRuntime
 }

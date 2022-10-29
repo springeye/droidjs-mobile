@@ -95,6 +95,7 @@ dependencies {
     implementation project(":base")
     nodejsImplementation project(":nodejs")
     j2v8Implementation project(":j2v8")
+    luajImplementation project(":luaj")
 
     // For Robolectric tests.
     testImplementation 'com.google.dagger:hilt-android-testing:2.44'
@@ -161,10 +162,6 @@ dependencies {
     implementation("io.ktor:ktor-client-websockets:$ktor_version")
     implementation("com.google.protobuf:protoc:3.21.7")
     implementation("com.google.protobuf:protobuf-java:3.21.7")
-//    implementation 'com.github.kigkrazy:luaj-android:3.0.3'
-
-    implementation 'com.github.springeye:luaj-android:4c90be89ed'
-
 
 
 

@@ -1,5 +1,6 @@
 package com.github.springeye.droidjs
 
+//import com.eclipsesource.v8.V8ScriptExecutionException
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -16,21 +17,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
-import com.eclipsesource.v8.V8ScriptExecutionException
 import com.github.springeye.droidjs.base.ScriptRuntime
-import com.github.springeye.droidjs.ext.match
 import com.github.springeye.droidjs.base.modules.IApp
+import com.github.springeye.droidjs.ext.match
 import com.github.springeye.droidjs.ui.theme.DroidjsmobileTheme
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*
@@ -40,7 +36,6 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import org.luaj.vm2.LuaError
 import org.opencv.core.*
 import javax.inject.Inject
 
@@ -106,12 +101,6 @@ class MainActivity2 : ComponentActivity() {
                         }
                     } catch (e: Exception) {
                         when (e) {
-                            is LuaError -> {
-                                Log.e("MainActivity","执行脚本出错:\n${e.message?:""}")
-                            }
-                            is V8ScriptExecutionException -> {
-                                Log.e("MainActivity","执行脚本出错:\n${e.message}\n${e.sourceLine}\n${e.jsStackTrace}"+"\n\n")
-                            }
                             else -> {
                                 Log.e("MainActivity", "执行脚本出现错误", e)
                             }

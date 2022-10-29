@@ -1,15 +1,14 @@
-package com.github.springeye.droidjs.lua
+package com.github.springeye.droidjs.luaj
 
+import android.app.Application
 import android.util.Log
-import com.github.springeye.droidjs.DroidJsApplication
 import com.github.springeye.droidjs.modules.IUi
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.TwoArgFunction
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
-import javax.inject.Inject
 
-class UiLua @Inject constructor(private val application: DroidJsApplication, private val ui: IUi): TwoArgFunction() {
+class UiLua  constructor(private val application: Application, private val ui: IUi): TwoArgFunction() {
     override fun call(modname: LuaValue?, env: LuaValue?): LuaValue {
         val library= tableOf()
         library.set("findByText", FindByTextFunc(ui))

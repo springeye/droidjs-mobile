@@ -1,15 +1,11 @@
 package com.github.springeye.droidjs
 
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.eclipsesource.v8.V8ScriptExecutionException
 import com.github.springeye.droidjs.base.ScriptRuntime
-import com.github.springeye.droidjs.utils.copyFileOrDir
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,18 +31,27 @@ class MainViewModel @Inject constructor(application: DroidJsApplication,
 //                js.exec(script)
 
 
-                val app = getApplication<DroidJsApplication>()
-                app.copyFileOrDir("examples/nodejs")
-                runtime.run(File(app.filesDir,"examples/nodejs/"),ScriptRuntime.Type.JS)
+//                val app = getApplication<DroidJsApplication>()
+//                app.copyFileOrDir("examples/nodejs")
+//                runtime.run(File(app.filesDir,"examples/nodejs/"),ScriptRuntime.Type.JS)
+
+                    getApplication<DroidJsApplication>().assets.open("main.lua").bufferedReader().use {
+                    it.readText()
+                }.also {
+                                    runtime.exec(it,ScriptRuntime.Type.LUA)
+                }
+
+
             }
 
         } catch (e: Exception) {
-            if(e is V8ScriptExecutionException){
-                Log.w("MainActivity","${e.message}\n${e.sourceLine}\n${e.jsStackTrace}"+"\n\n")
-//                e.printStackTrace()
-            }else {
-                Log.e("MainActivity", "执行js出现错误", e)
-            }
+            e.printStackTrace()
+//            if(e is V8ScriptExecutionException){
+//                Log.w("MainActivity","${e.message}\n${e.sourceLine}\n${e.jsStackTrace}"+"\n\n")
+////                e.printStackTrace()
+//            }else {
+//                Log.e("MainActivity", "执行js出现错误", e)
+//            }
         }
     }
 }

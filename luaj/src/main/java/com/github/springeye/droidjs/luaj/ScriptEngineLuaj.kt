@@ -1,16 +1,15 @@
-package com.github.springeye.droidjs
+package com.github.springeye.droidjs.luaj
 
 import android.app.AlertDialog
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.view.WindowManager
 import android.widget.Toast
 import com.github.springeye.droidjs.base.ScriptRuntime
-import com.github.springeye.droidjs.lua.AppLua
-import com.github.springeye.droidjs.lua.UiLua
-import com.github.springeye.droidjs.modules.IApp
-import com.github.springeye.droidjs.modules.IConsole
+import com.github.springeye.droidjs.base.modules.IApp
+import com.github.springeye.droidjs.base.modules.IConsole
 import com.github.springeye.droidjs.modules.IUi
 import org.luaj.vm2.Globals
 import org.luaj.vm2.LoadState
@@ -19,11 +18,11 @@ import org.luaj.vm2.compiler.LuaC
 import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.jse.JsePlatform
 import java.io.File
-import javax.inject.Inject
-class ScriptEngineLuaj @Inject constructor(val application: DroidJsApplication,
-                                           val ui: IUi,
-                                           val app: IApp,
-                                           val console: IConsole,
+
+open class ScriptEngineLuaj  constructor(val application: Application,
+                                         val ui: IUi,
+                                         val app: IApp,
+                                         val console: IConsole,
 ): ScriptRuntime {
     private fun checkDialogPermission(): Boolean {
         return if(Settings.canDrawOverlays(application)){
