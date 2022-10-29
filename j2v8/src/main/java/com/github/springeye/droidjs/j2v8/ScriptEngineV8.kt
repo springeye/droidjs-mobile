@@ -1,6 +1,7 @@
-package com.github.springeye.droidjs
+package com.github.springeye.droidjs.j2v8
 
 import android.app.AlertDialog
+import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -9,24 +10,19 @@ import android.widget.Toast
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 import com.github.springeye.droidjs.base.ScriptRuntime
-import com.github.springeye.droidjs.js.AppJs
-import com.github.springeye.droidjs.js.ConsoleJs
-import com.github.springeye.droidjs.js.ImageJs
-import com.github.springeye.droidjs.js.UiJs
 import com.github.springeye.droidjs.base.modules.IApp
 import com.github.springeye.droidjs.base.modules.IConsole
 import com.github.springeye.droidjs.base.modules.IImage
 import com.github.springeye.droidjs.modules.IUi
-import registerJavaObject
 import java.io.File
-import javax.inject.Inject
 
 
-class ScriptEngineV8 @Inject constructor (val application: DroidJsApplication,
-                                          val ui:IUi,
-                                          val app: IApp,
-                                          val console: IConsole,
-                                          val image: IImage,
+open class ScriptEngineV8(
+    val application: Application,
+    val ui: IUi,
+    val app: IApp,
+    val console: IConsole,
+    val image: IImage,
 ) : ScriptRuntime {
     private fun checkDialogPermission(): Boolean {
         return if(Settings.canDrawOverlays(application)){
@@ -62,10 +58,10 @@ class ScriptEngineV8 @Inject constructor (val application: DroidJsApplication,
 
 
         return listOf<V8Object>(
-            v8.registerJavaObject("app",AppJs(app)),
-            v8.registerJavaObject("console",ConsoleJs(console)),
-            v8.registerJavaObject("ui",UiJs(ui,v8)),
-            v8.registerJavaObject("image",ImageJs(image,v8)),
+            v8.registerJavaObject("app", AppJs(app)),
+            v8.registerJavaObject("console", ConsoleJs(console)),
+            v8.registerJavaObject("ui", UiJs(ui,v8)),
+            v8.registerJavaObject("image", ImageJs(image,v8)),
         )
 
 

@@ -24,6 +24,7 @@ object AppModule {
     fun provideUINoteProvider(app:DroidJsApplication): UINoteProvider {
         return app
     }
+
     @Provides
     @Singleton
      fun provideApp(app:Application): IApp=App(app)

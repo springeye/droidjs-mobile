@@ -94,6 +94,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3:1.0.0-alpha11'
     implementation project(":base")
     nodejsImplementation project(":nodejs")
+    j2v8Implementation project(":j2v8")
 
     // For Robolectric tests.
     testImplementation 'com.google.dagger:hilt-android-testing:2.44'
@@ -152,7 +153,7 @@ dependencies {
 
 
 
-    implementation 'com.eclipsesource.j2v8:j2v8:6.2.1@aar'
+
 
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")

@@ -1,13 +1,12 @@
-package com.github.springeye.droidjs.js
+package com.github.springeye.droidjs.j2v8
 
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
 import com.github.springeye.droidjs.base.modules.IImage
 import com.github.springeye.droidjs.base.modules.image.ImageWrapper
 import com.github.springeye.droidjs.base.modules.image.TemplateMatching
-import toV8Object
 
-class ImageJs(private val image: IImage, private val v8:V8):JsModule {
+open class ImageJs(private val image: IImage, private val v8:V8): JsModule {
      fun read(filepath: String): ImageWrapper? {
          println("读取图片:${filepath}")
 

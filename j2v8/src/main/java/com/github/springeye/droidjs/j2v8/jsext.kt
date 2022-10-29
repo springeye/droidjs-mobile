@@ -1,6 +1,6 @@
+package com.github.springeye.droidjs.j2v8
 import com.eclipsesource.v8.V8
 import com.eclipsesource.v8.V8Object
-import com.github.springeye.droidjs.js.JsModule
 
 //fun V8Object.register(javaObj:Any) {
 //    javaObj::class.java.methods.forEach {method->
