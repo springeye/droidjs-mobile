@@ -1,8 +1,10 @@
 package com.github.springeye.droidjs.base.modules
 
-import androidx.annotation.Keep
+import android.util.Log
 
-@Keep
-interface IConsole {
-    fun log(vararg params:Any)
+
+class Console  constructor(): IConsole {
+    override fun log(vararg params: Any) {
+        Log.v("console",params.joinToString(" "))
+    }
 }

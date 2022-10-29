@@ -2,9 +2,7 @@ package com.github.springeye.droidjs.di
 
 import android.app.Application
 import com.github.springeye.droidjs.DroidJsApplication
-import com.github.springeye.droidjs.base.modules.IApp
-import com.github.springeye.droidjs.base.modules.IConsole
-import com.github.springeye.droidjs.base.modules.IImage
+import com.github.springeye.droidjs.base.modules.*
 import com.github.springeye.droidjs.modules.*
 import dagger.Binds
 import dagger.Module
@@ -26,22 +24,16 @@ object AppModule {
     fun provideUINoteProvider(app:DroidJsApplication): UINoteProvider {
         return app
     }
-
-}
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class BindSingletonModule{
-    @Binds
+    @Provides
     @Singleton
-    abstract fun bindApp(app: App): IApp
-    @Binds
+     fun provideApp(app:Application): IApp=App(app)
+    @Provides
     @Singleton
-    abstract fun bindConsole(console: Console): IConsole
-    @Binds
+     fun provideConsole(app:Application): IConsole=Console()
+    @Provides
     @Singleton
-    abstract fun bindUi(ui:Ui):IUi
-    @Binds
+     fun provideUi(app:Application,provider:UINoteProvider):IUi=Ui(provider)
+    @Provides
     @Singleton
-    abstract fun bindImage(image: Image): IImage
-
+     fun provideImage(app:Application): IImage=Image()
 }

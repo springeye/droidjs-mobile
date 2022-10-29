@@ -1,12 +1,22 @@
 package com.github.springeye.droidjs.base.modules
 
-import androidx.annotation.Keep
 import com.github.springeye.droidjs.base.modules.image.ImageWrapper
 import com.github.springeye.droidjs.base.modules.image.TemplateMatching
 import org.opencv.core.Point
 
-@Keep
-interface IImage{
-    fun read(filepath:String,): ImageWrapper?
-    fun find(large: ImageWrapper, small: ImageWrapper,weakThreshold:Float=0.7F,threshold:Float=0.9F,maxLevel:Int= TemplateMatching.MAX_LEVEL_AUTO):Point?
+
+class Image  constructor(): IImage {
+    override fun read(filepath: String): ImageWrapper? {
+        TODO("Not yet implemented")
+    }
+
+    override fun find(large: ImageWrapper, small: ImageWrapper,weakThreshold:Float,threshold:Float,maxLevel:Int): Point? {
+
+        val mat1 = large.mat
+        val mat2 = small.mat
+        assert(mat1!=null)
+        assert(mat2!=null)
+        return TemplateMatching.fastTemplateMatching(mat1!!,
+            mat2!!, TemplateMatching.MATCHING_METHOD_DEFAULT,weakThreshold, threshold, maxLevel)
+    }
 }

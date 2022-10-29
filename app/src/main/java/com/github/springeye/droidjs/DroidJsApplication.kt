@@ -3,7 +3,7 @@ package com.github.springeye.droidjs
 import android.app.Application
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
-import com.github.springeye.droidjs.modules.UINoteProvider
+import com.github.springeye.droidjs.base.modules.UINoteProvider
 import dagger.hilt.android.HiltAndroidApp
 import org.opencv.android.OpenCVLoader
 

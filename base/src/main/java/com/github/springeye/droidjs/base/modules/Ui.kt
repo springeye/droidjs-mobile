@@ -1,14 +1,14 @@
-package com.github.springeye.droidjs.modules
+package com.github.springeye.droidjs.base.modules
 
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
-import com.github.springeye.droidjs.DroidJsApplication
-import javax.inject.Inject
+import com.github.springeye.droidjs.modules.IUi
+import com.github.springeye.droidjs.modules.IUiNode
 
 interface UINoteProvider{
     val rootNote:AccessibilityNodeInfo?
 }
-class Ui @Inject constructor(private val provider: UINoteProvider): IUi {
+class Ui  constructor(private val provider: UINoteProvider): IUi {
     val LOG_TAG="Ui"
     override fun findByText(text: String):  IUiNode? {
         Log.d(LOG_TAG,"call findByText($text)")
@@ -28,7 +28,7 @@ class Ui @Inject constructor(private val provider: UINoteProvider): IUi {
 
 
 }
-data class UiNode(private val provider: UINoteProvider,private val viewId:String):IUiNode{
+data class UiNode(private val provider: UINoteProvider, private val viewId:String): IUiNode {
     val LOG_TAG="UiNode"
     override fun click(){
         Log.d(LOG_TAG,"call click,viewId=$viewId")
