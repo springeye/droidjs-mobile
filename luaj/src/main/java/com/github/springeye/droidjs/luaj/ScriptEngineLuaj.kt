@@ -1,29 +1,35 @@
 package com.github.springeye.droidjs.luaj
 
-import android.app.AlertDialog
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.view.WindowManager
-import android.widget.Toast
+import com.github.springeye.droidjs.base.GlobalFunctions
 import com.github.springeye.droidjs.base.ScriptRuntime
 import com.github.springeye.droidjs.base.modules.IApp
 import com.github.springeye.droidjs.base.modules.IConsole
 import com.github.springeye.droidjs.modules.IUi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import org.luaj.vm2.Globals
 import org.luaj.vm2.LoadState
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.compiler.LuaC
 import org.luaj.vm2.lib.OneArgFunction
+import org.luaj.vm2.lib.ZeroArgFunction
 import org.luaj.vm2.lib.jse.JsePlatform
 import java.io.File
+import kotlin.coroutines.CoroutineContext
 
 open class ScriptEngineLuaj  constructor(val application: Application,
                                          val ui: IUi,
                                          val app: IApp,
                                          val console: IConsole,
-): ScriptRuntime {
+                                         val globalFunctions: GlobalFunctions
+): ScriptRuntime,CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Job()
     private fun checkDialogPermission(): Boolean {
         return if(Settings.canDrawOverlays(application)){
             true;
@@ -41,14 +47,17 @@ open class ScriptEngineLuaj  constructor(val application: Application,
             set("alert",object:OneArgFunction(){
                 override fun call(p0: LuaValue?): LuaValue {
                     if(!checkDialogPermission())return NONE
-                    val message= p0?.checkstring()?.tojstring() ?: return NONE
+                    p0?.checkstring()
+                    val message= p0?.checkstring()?.tojstring()?: return NONE
+                    val title= p0.checkstring(2)?.tojstring()
 
-                    AlertDialog.Builder(application)
-                        .setTitle("提示")
-                        .setMessage(message)
-                        .create().apply {
-                            window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
-                        }.show()
+//                    AlertDialog.Builder(application)
+//                        .setTitle(title)
+//                        .setMessage(message)
+//                        .create().apply {
+//                            window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+//                        }.show()
+                    globalFunctions.alert(title,message)
                     return NONE
                 }
 
@@ -56,7 +65,13 @@ open class ScriptEngineLuaj  constructor(val application: Application,
             set("toast",object:OneArgFunction(){
                 override fun call(p0: LuaValue?): LuaValue {
                     val message = p0?.checkstring()?.tojstring()?:return NONE
-                    Toast.makeText(application, message, Toast.LENGTH_SHORT).show()
+                    globalFunctions.toast(message);
+                    return NONE
+                }
+            })
+            set("backHome",object:ZeroArgFunction(){
+                override fun call(): LuaValue {
+                    globalFunctions.backHome();
                     return NONE
                 }
             })
@@ -78,6 +93,6 @@ open class ScriptEngineLuaj  constructor(val application: Application,
     }
 
     override suspend fun close() {
-        TODO("Not yet implemented")
+        coroutineContext.cancel()
     }
 }
