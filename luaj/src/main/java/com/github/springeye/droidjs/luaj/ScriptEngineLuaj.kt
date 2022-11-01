@@ -77,6 +77,7 @@ open class ScriptEngineLuaj  constructor(val application: Application,
             })
             load(AppLua(application, app))
             load(UiLua(application, ui))
+            load(ImageLua(application, ui))
             LoadState.install(this)
             LuaC.install(this)
         }
