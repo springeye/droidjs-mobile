@@ -28,6 +28,7 @@ import com.github.springeye.droidjs.base.ScriptRuntime
 import com.github.springeye.droidjs.base.modules.IApp
 import com.github.springeye.droidjs.ext.match
 import com.github.springeye.droidjs.ui.theme.DroidjsmobileTheme
+import com.github.springeye.droidjs.utils.AccessibilityServiceTool
 import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*
 import io.ktor.client.plugins.websocket.*
@@ -73,6 +74,19 @@ class MainActivity2 : ComponentActivity() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+            }
+        }
+        lifecycleScope.launch{
+            async {
+                runCatching {
+                    if(AccessibilityServiceUtils.isAccessibilityServiceEnabled(this@MainActivity2,AppAccessibilityService::class.java)){
+
+                    }else{
+                        if(!AccessibilityServiceTool.enableAccessibilityServiceByRootAndWaitFor(this@MainActivity2,2000)){
+                            throw Exception("启动启动无障碍超时")
+                        }
+                    }
+                }.exceptionOrNull()?.printStackTrace()
             }
         }
     }
