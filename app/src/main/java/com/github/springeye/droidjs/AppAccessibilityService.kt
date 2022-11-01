@@ -15,6 +15,16 @@ import javax.inject.Inject
 class AppAccessibilityService: AccessibilityService() {
     @Inject
     lateinit var application: DroidJsApplication
+    override fun onCreate() {
+        super.onCreate()
+        application.service=this
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        application.service=null
+    }
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         val source = event?.source ?: return
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {

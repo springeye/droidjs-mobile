@@ -2,6 +2,7 @@ package com.github.springeye.droidjs.di
 
 import android.app.Application
 import com.github.springeye.droidjs.DroidJsApplication
+import com.github.springeye.droidjs.base.GlobalFunctions
 import com.github.springeye.droidjs.base.modules.*
 import com.github.springeye.droidjs.modules.*
 import dagger.Binds
@@ -24,7 +25,11 @@ object AppModule {
     fun provideUINoteProvider(app:DroidJsApplication): UINoteProvider {
         return app
     }
-
+    @Singleton
+    @Provides
+    fun provideGlobalFunctions(app:DroidJsApplication): GlobalFunctions {
+        return app
+    }
     @Provides
     @Singleton
      fun provideApp(app:Application): IApp=App(app)
