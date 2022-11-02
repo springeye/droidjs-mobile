@@ -38,7 +38,7 @@ open class ScriptEngineLuaj  constructor(val application: Application,
         }
     }
     private fun setup(): Globals {
-        val globals = JsePlatform.standardGlobals()
+        val globals = JsePlatform.debugGlobals()
         return globals.apply {
             load(SystemLib(application,globalFunctions))
             load(AppLua(application, app))

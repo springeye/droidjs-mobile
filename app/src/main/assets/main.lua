@@ -1,9 +1,12 @@
 require 'app'
 require 'ui'
+require 'device'
 print("hello lua")
-toast('toast test')
-alert('this is content')
-alert('this is content',"提示")
+print(device.deviceInfo('123'))
+print(device)
+--toast('toast test')
+--alert('this is content')
+--alert('this is content',"提示")
 --app.launch("com.tencent.wx")
 --local pkgName=app.getPackageName("微信")
 --if pkgName ~=nil then

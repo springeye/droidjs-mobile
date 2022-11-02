@@ -2,12 +2,12 @@ package com.github.springeye.droidjs.luaj
 
 import org.luaj.vm2.LuaTable
 import org.luaj.vm2.LuaValue
-import org.luaj.vm2.lib.OneArgFunction
-import org.luaj.vm2.lib.TwoArgFunction
-import org.luaj.vm2.lib.VarArgFunction
-import org.luaj.vm2.lib.ZeroArgFunction
+import org.luaj.vm2.Varargs
+import org.luaj.vm2.lib.*
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
-@Target(AnnotationTarget.FUNCTION)
+
+@Target(AnnotationTarget.FUNCTION
+)
 @MustBeDocumented
 annotation class Export
 abstract class AbstractLib: TwoArgFunction() {
@@ -16,42 +16,73 @@ abstract class AbstractLib: TwoArgFunction() {
             val name=method.name
 
             val params=method.parameterTypes
-            val luaFun = when (params.size) {
-                0 -> {
-                    object: ZeroArgFunction(){
-                        override fun call(): LuaValue {
-                            return CoerceJavaToLua.coerce(method.invoke(this@AbstractLib))
+            val luaFunc=object:VarArgFunction(){
+                override fun onInvoke(args: Varargs?): Varargs {
+                    if(args==null) {
+                        return CoerceJavaToLua.coerce(method.invoke(this@AbstractLib))
+                    }else{
+                        val inputs = mutableListOf<Any>()
+
+                        for (i in (params.indices)) {
+                            val clazz = params[i]
+                            val luaIndex=i+1
+                            when (clazz) {
+                                String::class.java -> {
+                                    inputs.add(args.checkstring(luaIndex).toString())
+                                }
+                                Double::class.java -> {
+                                    inputs.add(args.checkdouble(luaIndex))
+                                }
+                                Float::class.java -> {
+                                    inputs.add(args.checkdouble(luaIndex).toFloat())
+                                }
+                                Long::class.java -> {
+                                    inputs.add(args.checklong(luaIndex))
+                                }
+                                Int::class.java -> {
+                                    inputs.add(args.checkint(luaIndex))
+                                }
+                                Boolean::class.java -> {
+                                    inputs.add(args.checkboolean(luaIndex))
+                                }
+                                Char::class.java -> {
+                                    inputs.add(args.checkint(luaIndex).toChar())
+                                }
+                                Byte::class.java -> {
+                                    inputs.add(args.checkint(luaIndex).toByte())
+                                }
+                                Short::class.java -> {
+                                    inputs.add(args.checkint(luaIndex).toShort())
+                                }
+                            }
+
+
                         }
-                    }
-                }
-                1 -> {
-                    object: OneArgFunction(){
-                        override fun call(p0: LuaValue?): LuaValue {
-                            return CoerceJavaToLua.coerce(method.invoke(this@AbstractLib))
-                        }
-                    }
-                }
-                else -> {
-                    object: VarArgFunction(){
+                        return CoerceJavaToLua.coerce(method.invoke(this@AbstractLib,*inputs.toTypedArray()))
                     }
                 }
             }
-            library.set(name,luaFun)
+            library.set(name,luaFunc)
         }
         env?.apply {
             set("ui2",library)
             get("package").get("loaded").set("ui2", library);
         }
     }
-    @Export
-    fun findByText(text:String){
-
-    }
     abstract val libName:String
-    override fun call(modname: LuaValue?, env: LuaValue?): LuaValue {
-        val tables = LuaTable()
-        env?.set(libName, tables)
-        env?.get("package")?.get("loaded")?.set(libName, tables)
-        return tables;
+    abstract val functions:Map<String, LibFunction>
+    abstract val fields:Map<String, LuaValue>
+    final override fun call(modname: LuaValue?, env: LuaValue?): LuaValue {
+        val library = LuaTable()
+        functions.forEach { (name, func) ->
+            library.set(name,func)
+        }
+        fields.forEach { (name, func) ->
+            library.set(name,func)
+        }
+        register(library,env)
+        env?.set(libName, library)
+        env?.get("package")?.get("loaded")?.set(libName, library)
+        return library;
     }
 }
