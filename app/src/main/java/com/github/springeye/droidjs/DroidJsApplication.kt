@@ -38,7 +38,7 @@ class DroidJsApplication : Application(), UINoteProvider, GlobalFunctions {
     override val rootNote: AccessibilityNodeInfo?
         get() = root
 
-    override fun alert(title: String?, message: String) {
+    override suspend  fun alert(title: String?, message: String) {
         AlertDialog.Builder(this)
             .setTitle(title?:"")
             .setMessage(message)
@@ -47,11 +47,11 @@ class DroidJsApplication : Application(), UINoteProvider, GlobalFunctions {
             }.show()
     }
 
-    override fun toast(text: String) {
+    override suspend  fun toast(text: String) {
         Toast.makeText(this,text,Toast.LENGTH_SHORT).show()
     }
 
-    override fun backHome() {
+    override suspend  fun backHome() {
         service?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME)
     }
 }

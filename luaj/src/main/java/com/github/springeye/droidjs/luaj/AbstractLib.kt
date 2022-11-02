@@ -1,5 +1,6 @@
 package com.github.springeye.droidjs.luaj
 
+import org.luaj.vm2.LuaTable
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.TwoArgFunction
@@ -9,9 +10,8 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua
 @Target(AnnotationTarget.FUNCTION)
 @MustBeDocumented
 annotation class Export
-class BaseLib {
-    private fun register(env: LuaValue?) {
-        val library= TwoArgFunction.tableOf()
+abstract class AbstractLib: TwoArgFunction() {
+    private fun register(library:LuaTable, env: LuaValue?) {
         this::class.java.methods.filter { it.annotations.find { it is Export }!=null }.forEach {method->
             val name=method.name
 
@@ -20,14 +20,14 @@ class BaseLib {
                 0 -> {
                     object: ZeroArgFunction(){
                         override fun call(): LuaValue {
-                            return CoerceJavaToLua.coerce(method.invoke(this@BaseLib))
+                            return CoerceJavaToLua.coerce(method.invoke(this@AbstractLib))
                         }
                     }
                 }
                 1 -> {
                     object: OneArgFunction(){
                         override fun call(p0: LuaValue?): LuaValue {
-                            return CoerceJavaToLua.coerce(method.invoke(this@BaseLib))
+                            return CoerceJavaToLua.coerce(method.invoke(this@AbstractLib))
                         }
                     }
                 }
@@ -46,5 +46,12 @@ class BaseLib {
     @Export
     fun findByText(text:String){
 
+    }
+    abstract val libName:String
+    override fun call(modname: LuaValue?, env: LuaValue?): LuaValue {
+        val tables = LuaTable()
+        env?.set(libName, tables)
+        env?.get("package")?.get("loaded")?.set(libName, tables)
+        return tables;
     }
 }

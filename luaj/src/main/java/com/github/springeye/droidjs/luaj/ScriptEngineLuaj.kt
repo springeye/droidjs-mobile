@@ -14,11 +14,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import org.luaj.vm2.Globals
 import org.luaj.vm2.LoadState
-import org.luaj.vm2.LuaValue
 import org.luaj.vm2.compiler.LuaC
-import org.luaj.vm2.lib.OneArgFunction
-import org.luaj.vm2.lib.ZeroArgFunction
-import org.luaj.vm2.lib.jse.CoerceJavaToLua
 import org.luaj.vm2.lib.jse.JsePlatform
 import java.io.File
 import kotlin.coroutines.CoroutineContext
@@ -44,41 +40,11 @@ open class ScriptEngineLuaj  constructor(val application: Application,
     private fun setup(): Globals {
         val globals = JsePlatform.standardGlobals()
         return globals.apply {
-            set("alert",object:OneArgFunction(){
-                override fun call(p0: LuaValue?): LuaValue {
-                    if(!checkDialogPermission())return NONE
-                    p0?.checkstring()
-                    val message= p0?.checkstring()?.tojstring()?: return NONE
-                    val title= p0.checkstring(2)?.tojstring()
-
-//                    AlertDialog.Builder(application)
-//                        .setTitle(title)
-//                        .setMessage(message)
-//                        .create().apply {
-//                            window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
-//                        }.show()
-                    globalFunctions.alert(title,message)
-                    return NONE
-                }
-
-            })
-            set("toast",object:OneArgFunction(){
-                override fun call(p0: LuaValue?): LuaValue {
-                    val message = p0?.checkstring()?.tojstring()?:return NONE
-                    globalFunctions.toast(message);
-                    return NONE
-                }
-            })
-            set("backHome",object:ZeroArgFunction(){
-                override fun call(): LuaValue {
-                    globalFunctions.backHome();
-                    return NONE
-                }
-            })
-            set("system",CoerceJavaToLua.coerce(SystemFunctions()))
+            load(SystemLib(application,globalFunctions))
             load(AppLua(application, app))
             load(UiLua(application, ui))
             load(ImageLua(application, ui))
+            load(DeviceLib(application))
             LoadState.install(this)
             LuaC.install(this)
         }

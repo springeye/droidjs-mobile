@@ -6,6 +6,7 @@ import com.github.springeye.droidjs.base.ScriptRuntime
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.luaj.vm2.LuaError
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,8 +39,16 @@ class MainViewModel @Inject constructor(application: DroidJsApplication,
                     getApplication<DroidJsApplication>().assets.open("main.lua").bufferedReader().use {
                     it.readText()
                 }.also {
-                                    runtime.exec(it,ScriptRuntime.Type.LUA)
-                }
+                        try {
+                            runtime.exec(it,ScriptRuntime.Type.LUA)
+                        } catch (e: Exception) {
+                            if(e is LuaError){
+                                println(e.message)
+                            }else {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
 
 
             }
