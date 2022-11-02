@@ -21,7 +21,27 @@ class SystemLib(private val app:Application,private val globalFunctions: GlobalF
         call.set("backHome",BackHome(app,globalFunctions))
         call.set("alert",Alert(app,globalFunctions))
         call.set("sleep",Sleep(app,globalFunctions))
+        call.set("sendKey",SendKey(app,globalFunctions))
+        call.set("sendText",SendText(app,globalFunctions))
         return call
+    }
+    private class SendKey(private val app:Application,private val globalFunctions: GlobalFunctions): OneArgFunction() {
+        override fun call(p0: LuaValue?): LuaValue {
+            runBlocking(Dispatchers.Unconfined) {
+                p0?.checkint()?.let { globalFunctions.sendKey(it) }
+            }
+            return NONE
+        }
+
+    }
+    private class SendText(private val app:Application,private val globalFunctions: GlobalFunctions): OneArgFunction() {
+        override fun call(p0: LuaValue?): LuaValue {
+            runBlocking(Dispatchers.Unconfined) {
+                p0?.checkstring()?.toString()?.let { globalFunctions.sendText(it) }
+            }
+            return NONE
+        }
+
     }
     private class Sleep(private val app:Application,private val globalFunctions: GlobalFunctions): OneArgFunction() {
         override fun call(p0: LuaValue?): LuaValue {

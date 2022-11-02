@@ -13,6 +13,7 @@ import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
 import com.github.springeye.droidjs.base.GlobalFunctions
 import com.github.springeye.droidjs.base.modules.UINoteProvider
+import com.github.springeye.droidjs.utils.ProcessShell
 import dagger.hilt.android.HiltAndroidApp
 import org.opencv.android.OpenCVLoader
 
@@ -53,5 +54,13 @@ class DroidJsApplication : Application(), UINoteProvider, GlobalFunctions {
 
     override suspend  fun backHome() {
         service?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME)
+    }
+
+    override suspend fun sendKey(keyCode: Int) {
+        println(ProcessShell.exec("input keyevent $keyCode",false).result)
+    }
+
+    override suspend fun sendText(text: String) {
+        println( ProcessShell.exec("input text $text",false).result)
     }
 }
