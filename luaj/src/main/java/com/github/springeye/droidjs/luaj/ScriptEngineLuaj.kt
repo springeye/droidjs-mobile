@@ -18,6 +18,7 @@ import org.luaj.vm2.LuaValue
 import org.luaj.vm2.compiler.LuaC
 import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.ZeroArgFunction
+import org.luaj.vm2.lib.jse.CoerceJavaToLua
 import org.luaj.vm2.lib.jse.JsePlatform
 import java.io.File
 import kotlin.coroutines.CoroutineContext
@@ -43,7 +44,6 @@ open class ScriptEngineLuaj  constructor(val application: Application,
     private fun setup(): Globals {
         val globals = JsePlatform.standardGlobals()
         return globals.apply {
-
             set("alert",object:OneArgFunction(){
                 override fun call(p0: LuaValue?): LuaValue {
                     if(!checkDialogPermission())return NONE
@@ -75,6 +75,7 @@ open class ScriptEngineLuaj  constructor(val application: Application,
                     return NONE
                 }
             })
+            set("system",CoerceJavaToLua.coerce(SystemFunctions()))
             load(AppLua(application, app))
             load(UiLua(application, ui))
             load(ImageLua(application, ui))

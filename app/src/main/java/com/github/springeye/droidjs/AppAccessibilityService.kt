@@ -22,8 +22,9 @@ class AppAccessibilityService: AccessibilityService() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        instance=null
         application.service=null
+        super.onDestroy()
     }
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         val source = event?.source ?: return
@@ -62,11 +63,6 @@ class AppAccessibilityService: AccessibilityService() {
     override fun onUnbind(intent: Intent?): Boolean {
         Log.d("AppAccessibilityService", "onUnbind")
         return super.onUnbind(intent)
-    }
-
-    override fun onDestroy() {
-        instance=null
-        super.onDestroy()
     }
     companion object{
         private val LOCK = ReentrantLock()

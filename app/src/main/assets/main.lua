@@ -10,13 +10,15 @@ if pkgName ~=nil then
 else
     print("没有找到微信")
 end
-local node=ui.findByText("匹配图片")
+backHome()
+system:sleep(1500)
+local node=ui.findByText("Gmail")
 if node==nil then
     print("没有找到节点")
 else
     print(node)
+    node:click()
 end
 
---node.click()
 
 
